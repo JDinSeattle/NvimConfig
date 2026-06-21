@@ -63,6 +63,15 @@ local function setup_neotest()
   require("neotest").setup({ adapters = adapters })
 end
 
+local function lsp_capabilities()
+  local capabilities = vim.lsp.protocol.make_client_capabilities()
+  local ok, blink = pcall(require, "blink.cmp")
+  if ok and blink.get_lsp_capabilities then
+    return blink.get_lsp_capabilities(capabilities)
+  end
+  return capabilities
+end
+
 return {
   {
     "jay-babu/mason-nvim-dap.nvim",
@@ -115,6 +124,7 @@ return {
 
       vim.g.rustaceanvim = {
         server = {
+          capabilities = lsp_capabilities(),
           on_attach = function(_, bufnr)
             vim.keymap.set("n", "<leader>cR", function()
               vim.cmd.RustLsp("codeAction")
@@ -132,7 +142,14 @@ return {
               },
               check = { command = "clippy" },
               checkOnSave = true,
+              completion = {
+                autoimport = { enable = true },
+              },
               diagnostics = { enable = true },
+              imports = {
+                granularity = { group = "module" },
+                prefix = "self",
+              },
               procMacro = { enable = true },
             },
           },

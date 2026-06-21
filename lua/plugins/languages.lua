@@ -44,6 +44,7 @@ local function setup_lsp_servers()
         basedpyright = {
           analysis = {
             autoSearchPaths = true,
+            autoImportCompletions = true,
             diagnosticMode = "openFilesOnly",
             typeCheckingMode = "standard",
             useLibraryCodeForTypes = true,
@@ -52,7 +53,14 @@ local function setup_lsp_servers()
       },
     },
     clangd = {
-      cmd = { "clangd", "--background-index", "--clang-tidy", "--completion-style=detailed" },
+      cmd = {
+        "clangd",
+        "--background-index",
+        "--clang-tidy",
+        "--completion-style=detailed",
+        "--header-insertion=iwyu",
+        "--header-insertion-decorators",
+      },
       init_options = {
         fallbackFlags = { "-std=c11" },
       },
@@ -126,7 +134,31 @@ local function setup_lsp_servers()
     ruff = {},
     taplo = {},
     terraformls = {},
-    vtsls = {},
+    vtsls = {
+      settings = {
+        javascript = {
+          preferences = {
+            includePackageJsonAutoImports = "auto",
+          },
+          suggest = {
+            autoImports = true,
+            completeFunctionCalls = true,
+          },
+        },
+        typescript = {
+          preferences = {
+            includePackageJsonAutoImports = "auto",
+          },
+          suggest = {
+            autoImports = true,
+            completeFunctionCalls = true,
+          },
+        },
+        vtsls = {
+          autoUseWorkspaceTsdk = true,
+        },
+      },
+    },
     yamlls = {
       settings = {
         yaml = {
@@ -208,8 +240,12 @@ return {
       "rafamadriz/friendly-snippets",
     },
     opts = {
-      keymap = { preset = "enter" },
+      keymap = {
+        preset = "enter",
+        ["<CR>"] = { "select_and_accept", "fallback" },
+      },
       completion = {
+        accept = { resolve_timeout_ms = 1000 },
         documentation = { auto_show = true, auto_show_delay_ms = 250 },
         ghost_text = { enabled = true },
         list = {
