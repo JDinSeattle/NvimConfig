@@ -208,10 +208,13 @@ return {
       "rafamadriz/friendly-snippets",
     },
     opts = {
-      keymap = { preset = "default" },
+      keymap = { preset = "enter" },
       completion = {
         documentation = { auto_show = true, auto_show_delay_ms = 250 },
         ghost_text = { enabled = true },
+        list = {
+          selection = { preselect = true, auto_insert = false },
+        },
       },
       sources = {
         default = { "lsp", "path", "snippets", "buffer" },
