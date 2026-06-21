@@ -23,6 +23,8 @@ local function lsp_on_attach(_, bufnr)
     require("conform").format({ bufnr = bufnr, async = true, lsp_format = "fallback" })
   end, "[Format] Buffer")
   map("n", "K", vim.lsp.buf.hover, "[LSP] Hover")
+  map("n", "gK", vim.lsp.buf.signature_help, "[LSP] Signature help")
+  map("i", "<C-k>", vim.lsp.buf.signature_help, "[LSP] Signature help")
 end
 
 local function setup_lsp_servers()
@@ -62,7 +64,7 @@ local function setup_lsp_servers()
         "--header-insertion-decorators",
       },
       init_options = {
-        fallbackFlags = { "-std=c11" },
+        fallbackFlags = { "-std=c11", "-Wall", "-Wextra", "-Wpedantic" },
       },
     },
     docker_compose_language_service = {},

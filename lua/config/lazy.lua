@@ -16,6 +16,7 @@ vim.opt.rtp:prepend(lazypath)
 
 require("config.options")
 require("config.input_method")
+require("config.diagnostics")
 require("config.autocmds")
 require("config.keymaps")
 

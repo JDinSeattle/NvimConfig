@@ -16,6 +16,7 @@ vim.opt.hlsearch = true
 vim.opt.scrolloff = 5
 vim.opt.sidescrolloff = 10
 vim.opt.startofline = false
+vim.opt.updatetime = 200
 vim.opt.clipboard = "unnamedplus"
 vim.opt.conceallevel = 2
 vim.opt.signcolumn = "yes:1"

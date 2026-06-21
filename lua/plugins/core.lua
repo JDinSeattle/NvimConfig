@@ -118,6 +118,30 @@ return {
       { "<leader>xX", "<cmd>Trouble diagnostics toggle filter.buf=0<cr>", desc = "[Trouble] Buffer diagnostics" },
       { "<leader>cs", "<cmd>Trouble symbols toggle focus=false<cr>", desc = "[Trouble] Symbols" },
       { "<leader>cl", "<cmd>Trouble lsp toggle focus=false win.position=right<cr>", desc = "[Trouble] LSP" },
+      { "<leader>xL", "<cmd>Trouble loclist toggle<cr>", desc = "[Trouble] Location list" },
+      { "<leader>xQ", "<cmd>Trouble qflist toggle<cr>", desc = "[Trouble] Quickfix list" },
+      {
+        "[q",
+        function()
+          if require("trouble").is_open() then
+            require("trouble").prev({ skip_groups = true, jump = true })
+          else
+            pcall(vim.cmd.cprevious)
+          end
+        end,
+        desc = "[Trouble] Previous item",
+      },
+      {
+        "]q",
+        function()
+          if require("trouble").is_open() then
+            require("trouble").next({ skip_groups = true, jump = true })
+          else
+            pcall(vim.cmd.cnext)
+          end
+        end,
+        desc = "[Trouble] Next item",
+      },
     },
     opts = {},
   },
