@@ -84,7 +84,7 @@ return {
     dependencies = { "nvim-mini/mini.icons" },
     opts = {
       options = {
-        theme = "catppuccin",
+        theme = "catppuccin-nvim",
         globalstatus = true,
         component_separators = "",
         section_separators = { left = "", right = "" },
