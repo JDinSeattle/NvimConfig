@@ -107,6 +107,32 @@ return {
         desc = "[Snacks] Delete buffer",
       },
       {
+        "<leader>bd",
+        function()
+          require("snacks").bufdelete()
+        end,
+        desc = "[Buffer] Delete buffer",
+      },
+      {
+        "<leader>bo",
+        function()
+          require("snacks").bufdelete.other()
+        end,
+        desc = "[Buffer] Delete other buffers",
+      },
+      {
+        "<leader>bi",
+        function()
+          require("snacks").bufdelete.invisible()
+        end,
+        desc = "[Buffer] Delete invisible buffers",
+      },
+      {
+        "<leader>bD",
+        "<cmd>bd<cr>",
+        desc = "[Buffer] Delete buffer and window",
+      },
+      {
         "<A-i>",
         function()
           require("snacks").terminal()
@@ -409,39 +435,45 @@ return {
             end
           end
 
-          map_toggle(function()
+          local function map_toggles(factory, lhses)
+            for _, lhs in ipairs(lhses) do
+              map_toggle(factory, lhs)
+            end
+          end
+
+          map_toggles(function()
             return Snacks.toggle.dim()
-          end, "<leader>tD")
-          map_toggle(function()
+          end, { "<leader>tD", "<leader>uD" })
+          map_toggles(function()
             return Snacks.toggle.option("spell", { name = "Spelling" })
-          end, "<leader>ts")
-          map_toggle(function()
+          end, { "<leader>ts", "<leader>us" })
+          map_toggles(function()
             return Snacks.toggle.option("wrap", { name = "Wrap" })
-          end, "<leader>tw")
-          map_toggle(function()
+          end, { "<leader>tw", "<leader>uw" })
+          map_toggles(function()
             return Snacks.toggle.option("relativenumber", { name = "Relative Number" })
-          end, "<leader>tL")
+          end, { "<leader>tL", "<leader>uL" })
           map_toggle(function()
             return Snacks.toggle.diagnostics()
           end, "<leader>td")
-          map_toggle(function()
+          map_toggles(function()
             return Snacks.toggle.line_number()
-          end, "<leader>tl")
-          map_toggle(function()
+          end, { "<leader>tl", "<leader>ul" })
+          map_toggles(function()
             return Snacks.toggle.option(
               "conceallevel",
               { off = 0, on = vim.o.conceallevel > 0 and vim.o.conceallevel or 2 }
             )
-          end, "<leader>tc")
-          map_toggle(function()
+          end, { "<leader>tc", "<leader>uc" })
+          map_toggles(function()
             return Snacks.toggle.treesitter()
-          end, "<leader>tT")
-          map_toggle(function()
+          end, { "<leader>tT", "<leader>uT" })
+          map_toggles(function()
             return Snacks.toggle.inlay_hints()
-          end, "<leader>th")
-          map_toggle(function()
+          end, { "<leader>th", "<leader>uh" })
+          map_toggles(function()
             return Snacks.toggle.indent()
-          end, "<leader>tg")
+          end, { "<leader>tg", "<leader>ug" })
 
           vim.api.nvim_set_hl(0, "SnacksPickerListCursorLine", { bg = "#313244" })
         end,

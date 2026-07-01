@@ -30,10 +30,17 @@ return {
     opts = function(_, opts)
       opts.spec = opts.spec or {}
       vim.list_extend(opts.spec, {
+        { "<leader>b", group = "buffers" },
+        { "<leader>c", group = "code" },
         { "<leader>g", group = "git" },
         { "<leader>gg", group = "git actions" },
+        { "<leader>q", group = "quit/session" },
+        { "<leader>r", group = "run/build" },
         { "<leader>s", group = "search/snacks" },
         { "<leader>t", group = "toggles" },
+        { "<leader>u", group = "ui/toggles" },
+        { "<leader>w", group = "windows" },
+        { "<leader>x", group = "diagnostics/lists" },
         { "<leader>D", group = "dap view" },
       })
     end,
@@ -59,6 +66,12 @@ return {
       lsp = {
         progress = {
           enabled = false,
+        },
+        signature = {
+          enabled = true,
+          auto_open = {
+            enabled = false,
+          },
         },
         override = {
           ["vim.lsp.util.convert_input_to_markdown_lines"] = false,

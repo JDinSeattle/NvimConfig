@@ -34,8 +34,12 @@ end
 local readable_groups = {
   dark = {
     Comment = { fg = "#bac2de", italic = true },
+    Cursor = { fg = "#11111b", bg = "#f9e2af", bold = true },
+    CursorIM = { fg = "#11111b", bg = "#89dceb", bold = true },
+    CursorInsert = { fg = "#11111b", bg = "#89dceb", bold = true },
     CursorLine = { bg = "#242638" },
     CursorLineNr = { fg = "#f5e0dc", bold = true },
+    CursorReplace = { fg = "#11111b", bg = "#f38ba8", bold = true },
     ColorColumn = { bg = "#313244" },
     DiagnosticUnnecessary = { fg = "#8b93b8" },
     IblIndent = { fg = "#585b70" },
@@ -45,16 +49,32 @@ local readable_groups = {
     LspCodeLensSeparator = { fg = "#8b93b8" },
     LspInlayHint = { fg = "#d7ddff", bg = "#313244", italic = true },
     LspInlayHints = { fg = "#d7ddff", bg = "#313244", italic = true },
+    lCursor = { fg = "#11111b", bg = "#89dceb", bold = true },
+    MatchParen = { fg = "#11111b", bg = "#f38ba8", bold = true, underline = true },
     NonText = { fg = "#8b93b8" },
+    RainbowDelimiterRed = { fg = "#ff6b93", bold = true },
+    RainbowDelimiterYellow = { fg = "#ffd166", bold = true },
+    RainbowDelimiterBlue = { fg = "#89dceb", bold = true },
+    RainbowDelimiterOrange = { fg = "#fab387", bold = true },
+    RainbowDelimiterGreen = { fg = "#a6e3a1", bold = true },
+    RainbowDelimiterViolet = { fg = "#cba6f7", bold = true },
+    RainbowDelimiterCyan = { fg = "#94e2d5", bold = true },
     SnacksIndent = { fg = "#585b70" },
     SnacksIndentScope = { fg = "#bac2de" },
     SpecialKey = { fg = "#8b93b8" },
+    TermCursor = { fg = "#11111b", bg = "#f9e2af", bold = true },
+    Visual = { bg = "#3b4261", bold = true },
+    VisualNOS = { bg = "#3b4261", bold = true },
     Whitespace = { fg = "#6c7086" },
   },
   light = {
     Comment = { fg = "#6c6f85", italic = true },
+    Cursor = { fg = "#ffffff", bg = "#8839ef", bold = true },
+    CursorIM = { fg = "#ffffff", bg = "#1e66f5", bold = true },
+    CursorInsert = { fg = "#ffffff", bg = "#1e66f5", bold = true },
     CursorLine = { bg = "#eff1f5" },
     CursorLineNr = { fg = "#dc8a78", bold = true },
+    CursorReplace = { fg = "#ffffff", bg = "#d20f39", bold = true },
     ColorColumn = { bg = "#e6e9ef" },
     DiagnosticUnnecessary = { fg = "#9ca0b0" },
     IblIndent = { fg = "#bcc0cc" },
@@ -64,10 +84,22 @@ local readable_groups = {
     LspCodeLensSeparator = { fg = "#9ca0b0" },
     LspInlayHint = { fg = "#5c5f77", bg = "#e6e9ef", italic = true },
     LspInlayHints = { fg = "#5c5f77", bg = "#e6e9ef", italic = true },
+    lCursor = { fg = "#ffffff", bg = "#1e66f5", bold = true },
+    MatchParen = { fg = "#ffffff", bg = "#d20f39", bold = true, underline = true },
     NonText = { fg = "#9ca0b0" },
+    RainbowDelimiterRed = { fg = "#d20f39", bold = true },
+    RainbowDelimiterYellow = { fg = "#df8e1d", bold = true },
+    RainbowDelimiterBlue = { fg = "#1e66f5", bold = true },
+    RainbowDelimiterOrange = { fg = "#fe640b", bold = true },
+    RainbowDelimiterGreen = { fg = "#40a02b", bold = true },
+    RainbowDelimiterViolet = { fg = "#8839ef", bold = true },
+    RainbowDelimiterCyan = { fg = "#179299", bold = true },
     SnacksIndent = { fg = "#bcc0cc" },
     SnacksIndentScope = { fg = "#6c6f85" },
     SpecialKey = { fg = "#9ca0b0" },
+    TermCursor = { fg = "#ffffff", bg = "#8839ef", bold = true },
+    Visual = { bg = "#ccd0da", bold = true },
+    VisualNOS = { bg = "#ccd0da", bold = true },
     Whitespace = { fg = "#acb0be" },
   },
 }
@@ -91,6 +123,15 @@ local function schedule_wallpaper_theme()
     vim.defer_fn(refresh_wallpaper_theme, delay)
   end
 end
+
+vim.api.nvim_create_autocmd("TextYankPost", {
+  group = vim.api.nvim_create_augroup("user_highlight_yank", { clear = true }),
+  callback = function()
+    pcall(function()
+      (vim.hl or vim.highlight).on_yank()
+    end)
+  end,
+})
 
 vim.api.nvim_create_autocmd({ "ColorScheme", "VimEnter" }, {
   group = vim.api.nvim_create_augroup("user_terminal_wallpaper", { clear = true }),

@@ -12,13 +12,24 @@ local function lsp_on_attach(_, bufnr)
     vim.keymap.set(mode, lhs, rhs, { buffer = bufnr, desc = desc })
   end
 
+  local function rename_symbol()
+    vim.lsp.buf.rename()
+  end
+
+  local function rename_visual_symbol()
+    local esc = vim.api.nvim_replace_termcodes("<Esc>", true, false, true)
+    vim.api.nvim_feedkeys(esc, "n", false)
+    vim.schedule(rename_symbol)
+  end
+
   map("n", "gd", vim.lsp.buf.definition, "[LSP] Go to definition")
   map("n", "gD", vim.lsp.buf.declaration, "[LSP] Go to declaration")
   map("n", "gr", vim.lsp.buf.references, "[LSP] References")
   map("n", "gi", vim.lsp.buf.implementation, "[LSP] Implementation")
   map("n", "gy", vim.lsp.buf.type_definition, "[LSP] Type definition")
   map({ "n", "x" }, "<leader>ca", vim.lsp.buf.code_action, "[LSP] Code action")
-  map("n", "<leader>cr", vim.lsp.buf.rename, "[LSP] Rename")
+  map("n", "<leader>cr", rename_symbol, "[LSP] Rename")
+  map("x", "<leader>cr", rename_visual_symbol, "[LSP] Rename selection")
   map("n", "<leader>cf", function()
     require("conform").format({ bufnr = bufnr, async = true, lsp_format = "fallback" })
   end, "[Format] Buffer")
@@ -248,8 +259,18 @@ return {
       },
       completion = {
         accept = { resolve_timeout_ms = 1000 },
-        documentation = { auto_show = true, auto_show_delay_ms = 250 },
-        ghost_text = { enabled = true },
+        documentation = { auto_show = true, auto_show_delay_ms = 500 },
+        ghost_text = { enabled = false },
+        menu = {
+          auto_show = true,
+          auto_show_delay_ms = 80,
+        },
+        trigger = {
+          show_on_keyword = true,
+          show_on_trigger_character = true,
+          show_on_blocked_trigger_characters = { " ", "\n", "\t", "'", "\"", ")", "]", "}", ",", ";", ":" },
+          show_on_x_blocked_trigger_characters = { "'", "\"", "(", "{", "[" },
+        },
         list = {
           selection = { preselect = true, auto_insert = false },
         },
